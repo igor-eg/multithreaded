@@ -1,31 +1,44 @@
+import java.util.ArrayList;
 
 public class Main {
+    private static ArrayList<MyThread> myThreads = new ArrayList<>();
+    private static final int THREAD_STOP_TIME = 10000;
+    private static final int NUMBER_OF_THREADS = 5;
 
     public static void main(String[] args) {
-
         System.out.println("Старт потоков");
-        MyThread myThread1 = new MyThread();
-        MyThread myThread2 = new MyThread();
-        MyThread myThread3 = new MyThread();
-        MyThread myThread4 = new MyThread();
-        myThread1.setName("Поток 1");
-        myThread1.start();
-        myThread2.setName("Поток 2");
-        myThread2.start();
-        myThread3.setName("Поток 3");
-        myThread3.start();
-        myThread4.setName("Поток 4");
-        myThread4.start();
+        creatingStreams();
+        namingAndStartingStreams();
+        stoppingStreams(THREAD_STOP_TIME);
+    }
+
+
+    private static void creatingStreams() {
+        for (int i = 1; i < NUMBER_OF_THREADS; i++) {
+            myThreads.add(new MyThread("MyThread " + i));
+        }
+    }
+
+    private static void namingAndStartingStreams() {
+        int i = 1;
+        for (MyThread myThread : myThreads) {
+            myThread.setName("Поток " + i);
+            myThread.start();
+            i++;
+        }
+    }
+
+    private static void stoppingStreams(int THREAD_STOP_TIME) {
         try {
-            Thread.sleep(15000);
-            myThread4.interrupt();
-            myThread1.interrupt();
-            myThread2.interrupt();
-            myThread3.interrupt();
-            System.out.println("завершаю все потоки");
+            Thread.sleep(THREAD_STOP_TIME);
+            for (MyThread myThread : myThreads) {
+                myThread.interrupt();
+            }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        System.out.println("завершаю все потоки");
     }
+
 }
