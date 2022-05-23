@@ -1,8 +1,8 @@
 public class MyThread extends Thread {
     private static final int FLOW_DELAY_TIME = 2500;
 
-    MyThread(String name) {
-        super(name);
+    MyThread(ThreadGroup groupA, String name) {
+        super(groupA, name);
     }
 
     @Override
